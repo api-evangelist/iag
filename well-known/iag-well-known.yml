@@ -1,0 +1,102 @@
+generated: '2026-07-25'
+method: searched
+source: live probes of every IAG brand and gateway host, plus Internet Archive CDX history
+summary: >-
+  No /.well-known/ discovery document is served by any live IAG host today. The
+  three Apigee-fronted API virtual hosts return the Apigee ApplicationNotFound
+  fault (HTTP 404) for every well-known path; the Akamai-fronted brand websites
+  return HTTP 403 to non-browser clients for every path other than the document
+  root. The one document IAG genuinely did publish is an RFC 9116 security.txt,
+  served across the group and brand domains from at least May 2023 until it was
+  withdrawn in mid-2025. The last published revision is saved verbatim in this
+  directory as iag-security.txt; it is HISTORICAL, not currently served.
+catalog_present: false
+oidc_discovery_present: false
+oauth_metadata_present: false
+security_txt_present_live: false
+security_txt_present_archived: true
+hosts:
+- host: https://api.iag.com.au
+  note: Apigee Edge virtual host https_vhost (org iag-prod, env production).
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://api.cgu.com.au
+  note: Apigee Edge virtual host https_cgu_vhost (org iag-prod, env production).
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 404
+- host: https://api.nrma.com.au
+  note: Apigee Edge virtual host https_nrma_vhost (org iag-prod, env production).
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 404
+- host: https://www.iag.com.au
+  note: >-
+    Akamai (AkamaiGHost). Document root returns 200 to a browser-shaped request;
+    every other path returns 403 to non-browser clients, so live retrieval of
+    /.well-known/security.txt is blocked at the edge rather than absent by policy.
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+    live: false
+    archived_status: 404
+    archived_since: '2025-05-15'
+    last_published_snapshot: '2025-04-01'
+    file: iag-security.txt
+- host: https://www.cgu.com.au
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+    archived_status: 404
+    note: Named as a Canonical in the historical group security.txt; now 404.
+- host: https://www.nrma.com.au
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+    archived_status: 404
+    note: Named as a Canonical in the historical group security.txt; now 404.
+- host: https://www.iag.co.nz
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+security_txt:
+  file: iag-security.txt
+  status: withdrawn
+  format: RFC 9116
+  first_seen: '2023-05-31'
+  last_seen_200: '2025-04-01'
+  first_seen_404: '2025-05-15'
+  contact: mailto:cybersecurity@iag.com.au
+  expires: 'Wed, 1 Jan 2025 00:00 +1000'
+  expired_before_withdrawal: true
+  policy_line: No paid bounties currently offered
+  canonical_domains:
+  - www.nrma.com.au
+  - www.cgu.com.au
+  - www.sgio.com.au
+  - www.sgic.com.au
+  - www.iag.com.au
+  - www.wfi.com.au
+  - www.lsvcarinsurance.com.au
+  hiring:
+  - https://careers.iag.com.au/
+  - https://careers.iag.co.nz/
+  note: >-
+    careers.iag.co.nz no longer resolves; careers.iag.com.au returns 200. The
+    Expires field had already lapsed (1 Jan 2025) before the document was
+    withdrawn, so the last served revision was formally stale under RFC 9116.
+  source: https://web.archive.org/web/20250401010920id_/https://www.iag.com.au/.well-known/security.txt
+related:
+  vulnerability_disclosure: security/iag-vulnerability-disclosure.yml
+  domain_security: security/iag-domain-security.yml

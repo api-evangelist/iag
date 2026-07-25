@@ -160,6 +160,198 @@ findings:
   - url: https://api.rollin.com.au
     status: 000
     note: DNS does not resolve. No API for the ROLLiN' digital brand.
+  - url: https://api.wfi.com.au/
+    status: 404
+    note: >-
+      NEW 2026-07-25. Apigee fault naming virtual host https_wfi_vhost — a FOURTH
+      brand virtual host on the same gateway, for WFI (rural/farm). Not found in
+      the first round.
+  - url: https://test-api.iag.com.au/
+    status: 404
+    note: >-
+      NEW 2026-07-25. CNAME iag-nonprod-test.apigee.net. A publicly resolvable
+      NON-PRODUCTION Apigee organisation (org iag-nonprod, env test) returning the
+      same ApplicationNotFound fault on virtual host https_vhost.
+  - url: https://security.iag.com.au/
+    status: 401
+    note: >-
+      NEW 2026-07-25. WWW-Authenticate Basic realm "IBM Verify Identity Access for
+      Web". An IBM Verify Identity Access (WebSEAL) reverse proxy. Host exists,
+      auth-gated, not a public security or disclosure page.
+  - url: https://status.iag.com.au
+    status: 000
+    note: DNS does not resolve. No status page.
+  - url: https://status.nrma.com.au
+    status: 000
+    note: DNS does not resolve.
+  - url: https://trust.iag.com.au
+    status: 000
+    note: DNS does not resolve. No trust centre.
+  - url: https://iag.statuspage.io/
+    status: 200
+    note: >-
+      Redirects to atlassian.com/software/statuspage — the Statuspage marketing
+      site, i.e. an unclaimed subdomain, NOT an IAG status page.
+  - url: https://careers.iag.com.au/
+    status: 200
+    note: Careers site, named in the Hiring field of the historical group security.txt.
+  - url: https://careers.iag.co.nz/
+    status: 000
+    note: >-
+      DNS does not resolve, despite being named in the Hiring field of the last
+      published group security.txt — a stale reference in that document.
+  - url: https://api.iag.com.au/openapi.yaml
+    status: 404
+    note: Apigee ApplicationNotFound. No spec.
+  - url: https://api.iag.com.au/v1/openapi.json
+    status: 404
+    note: Apigee ApplicationNotFound. No spec.
+  - url: https://api.iag.com.au/api-docs
+    status: 404
+    note: Apigee ApplicationNotFound.
+  - url: https://api.iag.com.au/docs
+    status: 404
+    note: Apigee ApplicationNotFound.
+  - url: https://api.iag.com.au/redoc
+    status: 404
+    note: Apigee ApplicationNotFound.
+  - url: https://api.nrma.com.au/openapi.json
+    status: 404
+    note: Apigee ApplicationNotFound. No spec.
+  - url: https://api.nrma.com.au/swagger.json
+    status: 404
+    note: Apigee ApplicationNotFound. No spec.
+  - url: https://api.cgu.com.au/swagger.json
+    status: 404
+    note: Apigee ApplicationNotFound. No spec.
+  - url: https://api.iag.com.au/.well-known/oauth-protected-resource
+    status: 404
+    note: Not served. No MCP-style protected-resource metadata.
+  - url: https://api.iag.com.au/.well-known/api-catalog
+    status: 404
+    note: Not served. No RFC 9727 API catalogue.
+  - url: https://api.iag.com.au/.well-known/ai-plugin.json
+    status: 404
+    note: Not served.
+  - url: https://www.iag.com.au/.well-known/security.txt
+    status: 403
+    note: >-
+      Blocked live by Akamai, but the Internet Archive shows it returned 200 with
+      a real RFC 9116 document from 2023-05-31 to 2025-04-01, then 404 from
+      2025-05-15 onward. WITHDRAWN. Last revision saved verbatim at
+      well-known/iag-security.txt.
+  - url: https://mcp.iag.com.au
+    status: 000
+    note: DNS does not resolve. No MCP server.
+  - url: https://apihub.iag.com.au
+    status: 000
+    note: DNS does not resolve.
+  - url: https://apiportal.iag.com.au
+    status: 000
+    note: DNS does not resolve.
+  gatewayTopology:
+    platform: Apigee Edge
+    organizations:
+    - name: iag-prod
+      environment: production
+      resolves: iag-prod-production.apigee.net
+      virtualHosts:
+      - host: api.iag.com.au
+        vhost: https_vhost
+        brand: IAG group
+      - host: api.cgu.com.au
+        vhost: https_cgu_vhost
+        brand: CGU
+      - host: api.nrma.com.au
+        vhost: https_nrma_vhost
+        brand: NRMA Insurance
+      - host: api.wfi.com.au
+        vhost: https_wfi_vhost
+        brand: WFI
+    - name: iag-nonprod
+      environment: test
+      resolves: iag-nonprod-test.apigee.net
+      virtualHosts:
+      - host: test-api.iag.com.au
+        vhost: https_vhost
+    note: >-
+      Organisation and environment names are read from the CNAME targets, which
+      follow Apigee Edge's <org>-<env>.apigee.net convention. Every virtual host
+      answers with the ApplicationNotFound fault at the root: real proxies are
+      deployed, none is exposed at a discoverable public path.
+  apiProgram:
+    integrationPlatform: MuleSoft Anypoint API Experience Hub
+    apiCount: ~600
+    executive: Lloyd Thomas, Head of Integration, IAG
+    agentPosture: >-
+      IAG stated an intent to make its APIs "agent aware" and to apply AI
+      prompt-driven and agentic tooling to integration engineering, tempered by a
+      "measured" approach because of regulatory constraints.
+    publiclyReachable: false
+    source: https://www.itnews.com.au/news/iag-prepares-integration-engineering-for-ai-624023
+    date: '2026-03-10'
+    note: >-
+      Confirms a substantial internal API estate and an API catalogue/portal
+      product deployment. None of it is public: probes of iag.portal.*
+      .anypoint.mulesoft.com, apihub/apiportal/experience/anypoint.iag.com.au all
+      failed to resolve, and apis.iag.com.au (Akamai) returns 403 for every path.
+  securityTxt:
+    published: false
+    previouslyPublished: true
+    format: RFC 9116
+    firstSeen: '2023-05-31'
+    lastSeen200: '2025-04-01'
+    firstSeen404: '2025-05-15'
+    contact: cybersecurity@iag.com.au
+    expires: 'Wed, 1 Jan 2025 00:00 +1000'
+    policyLine: No paid bounties currently offered
+    canonicalDomains:
+    - www.nrma.com.au
+    - www.cgu.com.au
+    - www.sgio.com.au
+    - www.sgic.com.au
+    - www.iag.com.au
+    - www.wfi.com.au
+    - www.lsvcarinsurance.com.au
+    file: well-known/iag-security.txt
+    note: >-
+      The Expires date had already lapsed while the document was still being
+      served, so the final revision was formally stale under RFC 9116 before it
+      was withdrawn. sgio.com.au and sgic.com.au also served copies (archived
+      200s); cgu.com.au, nrma.com.au and wfi.com.au now return 404.
+  vulnerabilityDisclosure:
+    published: true
+    platform: HackerOne
+    url: https://hackerone.com/iag
+    handle: iag
+    owner: Insurance Australia Group
+    ownerWebsite: http://iag.com.au
+    paidBounties: false
+    verification: >-
+      Confirmed against HackerOne's public GraphQL endpoint —
+      query { team(handle: "iag") { handle name website } } returns
+      {"handle":"iag","name":"Insurance Australia Group","website":"http://iag.com.au"}.
+      This disambiguates the programme from International Airlines Group and from
+      AIG (hackerone.com/aig).
+    note: >-
+      MISSED IN ROUND 1. IAG does have a documented disclosure channel; it simply
+      is not linked from the corporate site and the security.txt that used to
+      point at it has been withdrawn.
+  packages:
+    firstParty: false
+    registriesProbed: [npm, PyPI, GitHub]
+    note: >-
+      No first-party IAG client library exists on any registry. The npm search for
+      IAG/insurance returns unrelated vendors; PyPI "iag-sdk" is a third-party SDK
+      for the Itential Automation Gateway, not Insurance Australia Group. The
+      InsuranceAustraliaGroup GitHub org holds a single repo, a fork of Google's
+      AppAuth-iOS; iagcl (IAG Customer Labs) holds four internal tooling repos
+      (data_pipeline, watchmen, bakery, mark59), most marked unmaintained.
+    homonymTraps:
+    - developer.iairgroup.com — International Airlines Group (British Airways, Iberia)
+    - developer.iagloyalty.com — IAG Loyalty (Avios), part of International Airlines Group
+    - developers.aig.com — American International Group
+    - hackerone.com/aig — AIG, a separate programme
   transports:
   - protocol: REST
     scheme: https
@@ -242,10 +434,19 @@ findings:
         7d847b00-9cb2-4e8b-9f14-fb58de4bcdde. Employee/internal SSO, not an
         API authorization server for third parties.
     - scheme: unknown (Apigee-managed)
-      where: api.iag.com.au / api.cgu.com.au / api.nrma.com.au
+      where: >-
+        api.iag.com.au / api.cgu.com.au / api.nrma.com.au / api.wfi.com.au /
+        test-api.iag.com.au
       note: >-
         Apigee normally fronts API-key or OAuth2 client-credentials policies,
         but nothing is published, so no scheme is asserted here.
+    - scheme: HTTP Basic (IBM Verify Identity Access for Web)
+      where: security.iag.com.au
+      note: >-
+        NEW 2026-07-25. HTTP 401 with WWW-Authenticate Basic realm "IBM Verify
+        Identity Access for Web" — an IBM WebSEAL reverse proxy fronting an
+        internal application. Evidence of a second enterprise IAM stack alongside
+        Microsoft Entra ID, not a third-party API authorization surface.
     wellKnown:
     - url: https://api.iag.com.au/.well-known/oauth-authorization-server
       status: 404
@@ -317,10 +518,49 @@ sources:
 - url: https://github.com/InsuranceAustraliaGroup
   type: SourceCode
   note: Official IAG GitHub organisation; one public repo, an AppAuth-iOS fork.
+- url: https://hackerone.com/iag
+  type: VulnerabilityDisclosure
+  note: >-
+    Insurance Australia Group vulnerability disclosure policy on HackerOne.
+    Ownership verified via HackerOne's public GraphQL endpoint.
+- url: https://web.archive.org/web/20250401010920id_/https://www.iag.com.au/.well-known/security.txt
+  type: SecurityTxt
+  note: >-
+    Last published revision of IAG's RFC 9116 security.txt (2025-04-01), saved
+    verbatim at well-known/iag-security.txt. Withdrawn from the live site in
+    mid-2025.
+- url: https://www.itnews.com.au/news/iag-prepares-integration-engineering-for-ai-624023
+  type: TradePress
+  note: >-
+    iTnews, 10 March 2026. IAG head of integration Lloyd Thomas on migrating ~600
+    APIs onto MuleSoft Anypoint API Experience Hub and making them "agent aware".
+- url: https://www.iag.com.au/about-us/corporate-governance/codes-and-policies
+  type: CorporateGovernance
+  note: Codes and policies index — Code of Ethics and Conduct, continuous disclosure, whistleblower.
+- url: https://careers.iag.com.au/
+  type: Careers
+  note: Named in the Hiring field of the historical group security.txt.
 actions:
   apisYmlUpdated: true
   openapiHarvested: false
   specsSaved: 0
+  enrichmentRounds:
+  - date: '2026-07-25'
+    round: 1
+    result: Recorded as an honest stub. Three Apigee virtual hosts identified.
+  - date: '2026-07-25'
+    round: 2
+    result: >-
+      Re-ran full contract discovery — still zero specs. Found four things round 1
+      missed: a fourth Apigee brand virtual host (api.wfi.com.au /
+      https_wfi_vhost), a publicly resolvable non-production Apigee organisation
+      (test-api.iag.com.au / iag-nonprod-test), a live HackerOne vulnerability
+      disclosure programme, and an RFC 9116 security.txt that IAG published across
+      seven brand domains until it was withdrawn in mid-2025 (recovered verbatim).
+      Also identified the MuleSoft Anypoint API Experience Hub programme (~600
+      APIs), an IBM Verify Identity Access surface at security.iag.com.au, and a
+      DMARC misconfiguration on rollin.com.au. Wrote domain-security,
+      vulnerability-disclosure, well-known, conformance and llms.txt artifacts.
   reason: >-
     Recorded as an honest stub. IAG operates a real, production Apigee API
     gateway across three brand virtual hosts but publishes no developer portal,

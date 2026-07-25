@@ -1,0 +1,183 @@
+generated: '2026-07-25'
+method: probed
+source: live DNS/TLS/HTTP probes of every IAG brand website, Apigee gateway virtual host and ancillary host
+summary: >-
+  Every IAG host is HTTPS-only and presents a valid certificate. The estate
+  splits cleanly in two: the Akamai-fronted brand websites negotiate TLS 1.3,
+  while all five Apigee gateway virtual hosts negotiate TLS 1.2. HSTS is present
+  everywhere except api.iag.co.nz, but the max-age is weak (86400 = 1 day) on
+  every Apigee host and on the NRMA, CGU and IAG NZ brand sites; only
+  apis.iag.com.au and docs.iag.com.au set a one-year max-age with
+  includeSubDomains, and only apis.iag.com.au sets preload. No IAG domain is
+  DNSSEC-signed and no IAG domain publishes a CAA record. Email authentication is
+  strong and centrally managed — every domain publishes SPF and a DMARC record
+  with p=reject reporting to dmarc.reporting@iag.com.au.
+hosts:
+- host: www.iag.com.au
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: 'Dec  6 23:59:59 2026 GMT'
+  hsts: false
+  edge: Akamai
+- host: apis.iag.com.au
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: 'Oct  3 23:59:59 2026 GMT'
+  hsts: true
+  hsts_max_age: 31536000
+  hsts_include_subdomains: true
+  hsts_preload: true
+  http_status: 403
+  edge: Akamai
+  note: Host resolves via apis.iag.com.au.edgekey.net. Returns Akamai "Access Denied" for every path.
+- host: docs.iag.com.au
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: 'Dec 13 23:59:59 2026 GMT'
+  hsts: true
+  hsts_max_age: 31536000
+  hsts_include_subdomains: true
+  edge: Azure App Service
+  note: >-
+    CNAME docs-iag-prod-wap.azurewebsites.net. Redirects to Microsoft Entra ID
+    sign-in via Azure Easy Auth. Internal documentation behind SSO.
+- host: api.iag.com.au
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: 'Aug 12 23:59:59 2026 GMT'
+  hsts: true
+  hsts_max_age: 86400
+  edge: Apigee Edge
+  note: CNAME iag-prod-production.apigee.net. Virtual host https_vhost.
+- host: api.cgu.com.au
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: 'Sep 18 23:59:59 2026 GMT'
+  hsts: true
+  hsts_max_age: 86400
+  edge: Apigee Edge
+  note: CNAME iag-prod-production.apigee.net. Virtual host https_cgu_vhost.
+- host: api.nrma.com.au
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: 'Sep 18 23:59:59 2026 GMT'
+  hsts: true
+  hsts_max_age: 86400
+  edge: Apigee Edge
+  note: CNAME iag-prod-production.apigee.net. Virtual host https_nrma_vhost.
+- host: api.wfi.com.au
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: 'Dec  3 23:59:59 2026 GMT'
+  hsts: true
+  hsts_max_age: 86400
+  edge: Apigee Edge
+  note: Virtual host https_wfi_vhost. Fourth brand virtual host, newly identified this round.
+- host: test-api.iag.com.au
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: 'Dec  3 23:59:59 2026 GMT'
+  hsts: true
+  hsts_max_age: 86400
+  edge: Apigee Edge
+  note: >-
+    CNAME iag-nonprod-test.apigee.net. Non-production Apigee organisation
+    (iag-nonprod, env test), publicly resolvable. Newly identified this round.
+- host: api.iag.co.nz
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: 'Oct 17 23:59:59 2026 GMT'
+  hsts: false
+  edge: Akamai
+  note: New Zealand business (State/AMI/NZI). Akamai "Access Denied"; no public content.
+- host: www.cgu.com.au
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: 'Dec  6 23:59:59 2026 GMT'
+  hsts: false
+  edge: Akamai
+- host: www.nrma.com.au
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: 'Dec  6 23:59:59 2026 GMT'
+  hsts: true
+  hsts_max_age: 86400
+  hsts_include_subdomains: true
+  edge: Akamai
+- host: www.iag.co.nz
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: 'Oct 17 23:59:59 2026 GMT'
+  hsts: true
+  hsts_max_age: 86400
+  hsts_include_subdomains: true
+  edge: Akamai
+- host: security.iag.com.au
+  https: true
+  http_status: 401
+  hsts: false
+  note: >-
+    HTTP 401 with WWW-Authenticate Basic realm "IBM Verify Identity Access for
+    Web". An IBM Verify Identity Access (WebSEAL) reverse proxy, not a public
+    security page.
+domains:
+- domain: iag.com.au
+  dnssec: false
+  caa: []
+  spf: true
+  spf_record: v=spf1 include:_spf.salesforce.com include:spf.protection.outlook.com a:chi-web-01.simprocloud.com include:eventsairmail.com include:service-now.com include:_spf-dc10.sapsf.com -all
+  dmarc: true
+  dmarc_policy: reject
+  dmarc_rua: dmarc.reporting@iag.com.au
+- domain: cgu.com.au
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+  dmarc_rua: dmarc.reporting@iag.com.au
+  note: >-
+    SPF includes mrspf.ebix.com.au and a:ssiw.qvalent.com — independent
+    corroboration that CGU transacts over the Ebix Sunrise Exchange broker rail
+    and uses Qvalent (Westpac) payment infrastructure.
+- domain: nrma.com.au
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+  dmarc_rua: dmarc.reporting@iag.com.au
+- domain: wfi.com.au
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+  dmarc_rua: dmarc.reporting@iag.com.au
+- domain: iag.co.nz
+  dnssec: false
+  caa: []
+  spf: true
+  spf_qualifier: softfail
+  dmarc: true
+  dmarc_policy: reject
+  dmarc_rua: dmarc.reporting@iag.com.au
+  note: SPF terminates in ~all (softfail) rather than -all as on the Australian domains.
+- domain: rollin.com.au
+  dnssec: false
+  caa: []
+  spf: true
+  spf_record: v=spf1 ip6:fdcf:abda:4154::/48 -all
+  dmarc: false
+  note: >-
+    ROLLiN' brand domain. The _dmarc TXT record contains an SPF string, not a
+    DMARC policy — a misconfiguration that leaves the domain without a valid
+    DMARC record. The SPF itself authorises only an RFC 4193 unique-local IPv6
+    range, which cannot originate internet mail.
+findings:
+- No IAG domain is DNSSEC-signed.
+- No IAG domain publishes a CAA record.
+- All five Apigee virtual hosts negotiate TLS 1.2, not TLS 1.3.
+- HSTS max-age of 86400 on the Apigee hosts is an order of magnitude below the
+  31536000 recommended for preload eligibility.
+- _dmarc.rollin.com.au contains an SPF record instead of a DMARC policy.

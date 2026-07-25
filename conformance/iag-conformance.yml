@@ -1,0 +1,143 @@
+generated: '2026-07-25'
+method: derived
+source: >-
+  Derived from live DNS/TLS/HTTP probes of the IAG estate, the archived group
+  security.txt, the HackerOne programme record, and published Australian
+  regulatory sources. There is no IAG OpenAPI, AsyncAPI or GraphQL schema to
+  derive from — nothing in this file is inferred from a specification.
+scope: >-
+  Cross-cutting standards conformance for Insurance Australia Group. Because IAG
+  publishes no machine-readable API contract, most API-layer standards cannot be
+  asserted either way and are recorded as unknown rather than false — the
+  evidence is absent, not negative. What can be asserted comes from transport,
+  DNS, email and disclosure surfaces that are observable without documentation.
+standards:
+- id: rfc9116-security-txt
+  conforms: false
+  previously_conformed: true
+  evidence: >-
+    A conforming security.txt with Contact, Expires, Preferred-Languages,
+    Canonical, Policy and Hiring fields was served on iag.com.au and six brand
+    domains from at least 2023-05-31 until 2025-04-01, then withdrawn (404 from
+    2025-05-15). Saved verbatim at well-known/iag-security.txt. The final revision
+    had an Expires date of 2025-01-01 that had already lapsed while it was still
+    being served, so it was non-conforming on the Expires requirement before it
+    was removed entirely.
+- id: iso29147-vulnerability-disclosure
+  conforms: true
+  evidence: >-
+    HackerOne vulnerability disclosure programme at https://hackerone.com/iag,
+    ownership confirmed via HackerOne's public GraphQL (team handle "iag" =
+    "Insurance Australia Group"). Disclosure channel cybersecurity@iag.com.au.
+    No paid bounty.
+- id: tls-1-2-minimum
+  conforms: true
+  evidence: >-
+    All thirteen probed hosts negotiate TLS 1.2 or better; no host accepts a
+    lower protocol version on the default handshake.
+- id: tls-1-3
+  conforms: partial
+  evidence: >-
+    Akamai-fronted brand and edge hosts negotiate TLS 1.3. All five Apigee Edge
+    virtual hosts (api.iag.com.au, api.cgu.com.au, api.nrma.com.au,
+    api.wfi.com.au, test-api.iag.com.au) negotiate TLS 1.2.
+- id: rfc6797-hsts
+  conforms: partial
+  evidence: >-
+    HSTS present on ten of thirteen hosts, absent on www.iag.com.au,
+    www.cgu.com.au and api.iag.co.nz. Only apis.iag.com.au (preload) and
+    docs.iag.com.au reach max-age 31536000; the Apigee hosts and the NRMA/CGU/NZ
+    brand sites use max-age 86400.
+- id: rfc8659-caa
+  conforms: false
+  evidence: No CAA record on iag.com.au, cgu.com.au, nrma.com.au, wfi.com.au, iag.co.nz or rollin.com.au.
+- id: dnssec
+  conforms: false
+  evidence: No DNSKEY published for any IAG registrable domain.
+- id: rfc7208-spf
+  conforms: true
+  evidence: >-
+    SPF published on every IAG domain probed. Australian domains terminate in
+    -all; iag.co.nz terminates in ~all.
+- id: rfc7489-dmarc
+  conforms: partial
+  evidence: >-
+    DMARC with p=reject and rua/ruf to dmarc.reporting@iag.com.au on iag.com.au,
+    cgu.com.au, nrma.com.au, wfi.com.au and iag.co.nz. _dmarc.rollin.com.au
+    contains an SPF string instead of a DMARC policy, so the ROLLiN' brand domain
+    has no valid DMARC record.
+- id: oauth2
+  conforms: unknown
+  evidence: >-
+    OAuth 2.0 authorization-code observed on docs.iag.com.au via Microsoft Entra
+    ID (Azure App Service Easy Auth, tenant
+    7d847b00-9cb2-4e8b-9f14-fb58de4bcdde) — an employee SSO surface, not a
+    third-party API authorization server. The Apigee gateway's own security
+    policy is not published, so no OAuth conformance is asserted for the APIs.
+- id: rfc8414-oauth-server-metadata
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server returns 404 on every gateway host.
+- id: openid-connect-discovery
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on api.iag.com.au, api.cgu.com.au and api.nrma.com.au.
+- id: rfc9457-problem-details
+  conforms: unknown
+  evidence: >-
+    No documented error contract. The only observable error body is the Apigee
+    ApplicationNotFound fault envelope ({"fault":{"faultstring":...,
+    "detail":{"errorcode":...}}}), which is the gateway default and not
+    application/problem+json.
+- id: rfc8594-sunset-header
+  conforms: unknown
+  evidence: No deprecation or versioning policy is published; no proxy is publicly routable to observe headers on.
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404 on api.iag.com.au.
+- id: openapi
+  conforms: false
+  evidence: >-
+    Zero OpenAPI or Swagger documents published. Probed /openapi.json,
+    /openapi.yaml, /swagger.json, /v1/openapi.json, /api-docs, /docs and /redoc
+    against api.iag.com.au, api.cgu.com.au and api.nrma.com.au — all returned the
+    Apigee ApplicationNotFound fault.
+- id: asyncapi
+  conforms: false
+  evidence: No event catalogue, webhook documentation or AsyncAPI definition found.
+- id: graphql
+  conforms: false
+  evidence: /graphql returns the Apigee ApplicationNotFound fault; no GraphQL surface on any IAG host.
+- id: acord
+  conforms: false
+  evidence: >-
+    No ACORD, AL3, NGDS or ACORD-certification reference found for IAG or its
+    brands. Australian broker-to-carrier transaction rails are the Ebix Sunrise
+    Exchange and the Steadfast Client Trading Platform, not the ACORD/IVANS stack
+    used in North America.
+- id: cdr-consumer-data-right
+  conforms: false
+  applicable: false
+  evidence: >-
+    General insurance is not a designated CDR sector. The extension flagged for
+    general insurance was paused and de-prioritised in favour of banking,
+    non-bank lending and energy. No open-insurance obligation applies to IAG.
+regulatory_regimes:
+- id: apra-prudential-supervision
+  applicable: true
+  note: >-
+    IAG is an APRA-regulated general insurer. Applicability is a matter of
+    Australian law, not an IAG conformance claim; no IAG-published attestation
+    was found and none is asserted here.
+- id: asic-conduct
+  applicable: true
+- id: general-insurance-code-of-practice
+  applicable: true
+certifications_published: none-found
+note: >-
+  No SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP attestation is published on any
+  probed IAG surface, and no trust centre was found (trust.iag.com.au does not
+  resolve; security.iag.com.au returns 401 behind an IBM Verify Identity Access
+  basic-auth realm). No Compliance pointer is therefore emitted.
+related:
+  domain_security: security/iag-domain-security.yml
+  vulnerability_disclosure: security/iag-vulnerability-disclosure.yml
+  well_known: well-known/iag-well-known.yml
