@@ -69,7 +69,6 @@ tags:
 - Carrier
 - Underwriting
 - Claims
-- Brokers
 - Partner Gated
 tags_raw:
 - Insurance
@@ -80,7 +79,6 @@ tags_raw:
 - Carrier
 - Underwriting
 - Claims
-- Broker
 - Partner Gated
 created: '2026-07-25'
 modified: '2026-07-25'
@@ -123,3 +121,5 @@ common:
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-tags-removed:
+- Brokers
