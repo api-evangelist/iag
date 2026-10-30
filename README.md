@@ -1,4 +1,4 @@
-# Insurance Australia Group (iag)
+# Insurance Australia Group
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,64 +64,112 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Insurance Australia Group (ASX: IAG) is the largest general insurance company in Australia and New Zealand, headquartered in Sydney and operating a portfolio of underwriting brands rather than a single consumer-facing label. In Australia it trades as NRMA Insurance, CGU, WFI, Swann Insurance and the digital-native ROLLiN'; in New Zealand as State, AMI, NZI and Lumley. Its lines of business are property and casualty — home and contents, motor, commercial, rural and farm, compulsory third party and specialty — split across a Direct Insurance Australia arm and an Intermediated Insurance Australia arm that sells through brokers and authorised representatives.
+Insurance Australia Group (IAG, ASX: IAG) is the largest general insurance company in Australia and New Zealand, headquartered in Sydney and operating a portfolio of underwriting brands rather than a single consumer-facing label. In Australia it trades as NRMA Insurance, CGU, WFI, Swann Insurance and the digital-native ROLLiN'; in New Zealand as State, AMI, NZI and Lumley. Its lines of business are property and casualty — home and contents, motor, commercial, rural and farm, compulsory third party and specialty — split across a Direct Insurance Australia arm and an Intermediated Insurance Australia arm that sells through brokers and authorised representatives. IAG has no public, self-serve API surface. Probing every conventional developer hostname on iag.com.au, cgu.com.au and nrma.com.au found no developer portal and no published reference documentation; docs.iag.com.au exists but immediately redirects to a Microsoft Entra ID sign-in and is an internal wall, not a portal. What the probes did confirm is a real Apigee API gateway fronting three brand virtual hosts — api.iag.com.au, api.cgu.com.au and api.nrma.com.au — each returning an Apigee ApplicationNotFound fault at the root, meaning proxies exist but none is discoverable or documented to the public. A second round of probing added a fourth brand virtual host, api.wfi.com.au, and a publicly resolvable non-production Apigee organisation at test-api.iag.com.au. IAG has also deployed MuleSoft's Anypoint API Experience Hub and is migrating roughly 600 APIs onto it, with a stated intent to make them agent aware — a substantial API estate that is entirely internal. Broker and partner integration in this market runs through human-facing trading portals — CGU's PolicyPlace quote-and-bind platform, the Ebix Sunrise Exchange and the Steadfast Client Trading Platform — not through an open API programme. IAG does run a HackerOne vulnerability disclosure programme, and published an RFC 9116 security.txt across seven brand domains until it was withdrawn in mid-2025. Australia has the legal machinery for open insurance and no live obligation: the Consumer Data Right that opened banking and energy was flagged for general insurance and then paused, so nothing compels IAG to publish. This record is therefore an honest stub: a partner-gated carrier with a private gateway and zero public specifications.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/iag/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/iag/refs/heads/main/apis.yml)
+**Areas:** Insurance · Australia · New Zealand · Property and Casualty · General Insurance · Carrier · Underwriting · Claims
 
-## Tags
+## Insurance Australia Group on APIs.io
 
-- Insurance
-- Australia
-- New Zealand
-- Property and Casualty
-- General Insurance
-- Carrier
-- Underwriting
-- Claims
-- Broker
-- Partner Gated
+Everything profiled for Insurance Australia Group is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/iag/](https://apis.io/providers/iag/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (1)
 
-- **Created:** 2026-07-25
-- **Modified:** 2026-07-25
+- [Insurance Australia Group API Gateway (private)](https://apis.io/apis/iag/iag-api-gateway/) — IAG runs an Apigee gateway with brand virtual hosts api.iag.com.au, api.cgu.com.au, api.nrma.com.au and api.wfi.com.au (plus the non-production…
 
-## APIs
+### Published properties
 
-**None.** IAG publishes no public, self-serve API.
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-This is a deliberate, verified finding rather than a gap in the research. Every conventional developer hostname and path was probed across `iag.com.au`, `cgu.com.au`, `nrma.com.au` and `iag.co.nz` on 2026-07-25:
+#### JSON-LD (1)
 
-- `developer.` / `developers.` / `developerportal.` / `gateway.` / `partners.` subdomains — **DNS does not resolve**
-- `docs.iag.com.au` — **HTTP 200, but redirects straight to Microsoft Entra ID sign-in**. Internal corporate documentation behind SSO, not a developer portal.
-- `api.iag.com.au`, `api.cgu.com.au`, `api.nrma.com.au` — **HTTP 404 with an Apigee fault**: `Unable to identify proxy for host: https_vhost / https_cgu_vhost / https_nrma_vhost`. A production Apigee API gateway is live behind all three brands, and not one proxy on it is publicly routed or documented.
-- `www.iag.com.au/developers`, `/api`, `/developer`, `/partners`, `/integrations` — **HTTP 403 (Akamai bot mitigation)**; no such developer surface is referenced anywhere on the public site.
-- No OpenAPI or Swagger document, no GraphQL endpoint, no `.proto`, no AsyncAPI, no webhook catalogue, no public Postman workspace.
+Linked-data contexts for the provider's vocabulary.
 
-## ACORD posture
+- [Iag Context](https://apis.io/jsonld/iag/iag-context/)
 
-**No ACORD reference found.** Nothing in IAG's public material mentions ACORD, ACORD XML, AL3, NGDS or ACORD certification. Australia does not run on the ACORD/IVANS agency-download stack used in North America — broker-to-carrier trading here moves over the **Ebix Sunrise Exchange** and the **Steadfast Client Trading Platform (SCTP)**, plus carrier-specific broker portals. CGU is connected to both, and has launched **PolicyPlace**, its own digital quote-and-bind front end for brokers, which IAG has said is additive to Sunrise and SCTP rather than a replacement. All three are human-facing platforms, not published APIs.
+#### Governance rules (1)
 
-## Quote / bind / issue / FNOL
+Spectral rulesets for the provider's contracts.
 
-Quote and bind genuinely exist — for **brokers**, through PolicyPlace, Sunrise and SCTP. Issue is internal. FNOL is taken through brand web forms and call centres. **None of the four verbs is exposed as a public API.**
+- [Insurance Australia Group API Rules](https://apis.io/rules/iag/iag-rules/)
 
-## Regulatory context
+#### Security (3)
 
-APRA supervises IAG prudentially and ASIC governs conduct, alongside the General Insurance Code of Practice. Australia has the legal machinery for open insurance and no live obligation: the **Consumer Data Right** that already opened banking and energy was flagged for extension to general insurance, then paused and de-prioritised. General insurance is **not** a designated CDR sector, so nothing compels IAG to publish product, policy or claims data through an API.
+Authentication, trust centre, and vulnerability disclosure.
 
-## Source code
+- [Iag Authentication](https://apis.io/security/iag/iag-authentication/)
+- [Iag Domain Security](https://apis.io/security/iag/iag-domain-security/)
+- [Iag Vulnerability Disclosure](https://apis.io/security/iag/iag-vulnerability-disclosure/)
 
-- [github.com/InsuranceAustraliaGroup](https://github.com/InsuranceAustraliaGroup) — official IAG organisation (Sydney). One public repository: a fork of Google's AppAuth-iOS OAuth/OIDC SDK. No API definitions.
-- [github.com/iagcl](https://github.com/iagcl) — "IAG Customer Labs". Four public repositories (`data_pipeline`, `watchmen`, `bakery`, `mark59`), all internal platform tooling and mostly unmaintained. No API definitions.
+#### Plans and pricing (1)
 
-## Links
+Published plans, tiers and prices.
 
-- **Website:** [https://www.iag.com.au/](https://www.iag.com.au/)
-- **Newsroom:** [https://www.iag.com.au/newsroom](https://www.iag.com.au/newsroom)
-- **CGU Partner Portal (login wall):** [https://www.cgu.com.au/eai/help](https://www.cgu.com.au/eai/help)
-- **Supplier Portal:** [https://www.iag.com.au/supplier-portal](https://www.iag.com.au/supplier-portal)
-- **LinkedIn:** [https://www.linkedin.com/company/iag](https://www.linkedin.com/company/iag)
-- **GitHub:** [https://github.com/InsuranceAustraliaGroup](https://github.com/InsuranceAustraliaGroup)
+- [Iag Plans Pricing](https://apis.io/plans/iag/iag-plans-pricing/)
 
-See [`review.yml`](review.yml) for the full probe log with HTTP statuses.
+#### Rate limits (1)
+
+Published request limits.
+
+- [Iag Rate Limits](https://apis.io/rate-limits/iag/iag-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.iag.com.au/)
+- [Getting started](https://docs.hackerone.com/en/articles/8509950-response-program-setup)
+- [Security](https://hackerone.com/iag)
+- [GitHub](https://github.com/InsuranceAustraliaGroup)
+
+## API Evangelist rating
+
+**Kin Score 17.6** — emerging · rubric 0.24.0 · scored 2026-10-20
+
+| Facet | Score |
+|---|---|
+| Discoverability | 74.1 |
+| Contract quality | 14.7 |
+| Contract governance | 22.0 |
+| Operational transparency | 13.2 |
+| Developer ergonomics | 11.9 |
+| Access clarity | 0.0 |
+
+**Agent readiness 2.5** — human-only
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | — |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 14.9** — Insurance
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/iag/](https://apis.io/providers/iag/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Insurance Australia Group: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/iag/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
